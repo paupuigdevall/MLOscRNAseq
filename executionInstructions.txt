@@ -1,0 +1,101 @@
+## Execution instructions ##
+
+#####################
+### Preprocessing ###
+#####################
+
+## Step 1. Run Cellranger ##
+
+### 1.1: For in-vitro models
+### Batch array job per 10x library ("cellranger_runs.txt"). Inside each folder (ie. mid_organoids8643920), the corresponding fastq files should be allocated. 
+
+cd code/preprocessing/invitro
+bsub -n32 -R'select[mem>180000] rusage[mem=180000] span[ptile=8]' -M180000 -J "cRangerhg38[1-9]" -q long -o log/cellranger.%J.%I.hg38.out -e log/cellranger.%J.%I.hg38.err ./cellranger_launcher.sh cellranger_runs.txt
+
+### 1.2: For fetal samples
+### Batch array job per 10x library ("cellranger_runs.txt"). It is executed per 10x library (ie. F10121620_A), specifying the fastq files produced on the 4 sequencing lanes (mid_organoids10621973, mid_organoids10621977, mid_organoids10621981, mid_organoids10621985).
+
+cd ../foetal
+bsub -n46 -R'select[mem>180000] rusage[mem=180000] span[ptile=8]' -M180000 -J "cRangerhg38[1-4]" -q long -o log/cellrangerMFQ.%J.%I.hg38.out -e log/cellrangerMFQ.%J.%I.hg38.err ./cellranger_launcherMultipleFastq.sh cellranger_MultipleFastQ.txt
+
+
+
+## Step 2. Run demuxlet ##
+
+### 2.1: For in-vitro models
+
+### VCF with the genotyping data per donor are available in a Zenodo repository ("inVitroLines_hg38LO.vcf")
+### For each 10x library, we generate a table with the donor identifier (VCF identifiers) that were pooled at the time of sequencing
+
+cd ../invitro
+Rscript tabGenerator.R
+
+### For each 10x library, there will be a demuxlet output in the "outs/" folder of the CellRanger output.
+bsub -R'select[mem>50000] rusage[mem=50000]' -M50000 -J "demuxlethg38[1-9]" -q long -o log/output.%J.%I -e log/error.%J.%I ./demuxlet_launcher_ALL_hg38_nofiltering.sh hg38_bamlist_ALL.txt
+
+
+
+### 2.2: For fetal samples
+
+### VCF with the genotyping data per donor are available in a Zenodo repository ("MLOallgenotypes.vcf.bgz")
+### For each 10x library, we generate a table with the donor identifier (VCF identifiers) that were pooled at the time of sequencing
+
+cd ../foetal
+Rscript tabGenerator.R
+
+### For each 10x library, there will be a demuxlet output in the "outs/" folder of the CellRanger output.
+bsub -n28 -R'select[mem>20000] rusage[mem=20000] span[ptile=8]' -M20000 -J "demuxlet[1-4]" -q long -o log/demuxlet.%J.%I.out -e log/demuxlet.%J.%I.hg38.err ./demuxlet_launcher_ALL_hg38.sh hg38_bamlist_ALL.txt
+
+
+
+
+##################
+### Processing ###
+##################
+
+cd ../../processing
+
+# Step 1: Generation of the Seurat R object (saved in RDS, available in Zenodo repository)
+Rscript QC_stats.R 
+
+
+############################
+### Analysis and Figures ###
+############################
+
+cd ./analysis
+
+##  Produce figures 3B-3E (Main) & S3A,S3B (Supplementary)
+Rscript visualizationSingleCell.R
+
+## Run miloR differential abundance (2D vs 3D) and produce figures 3F and 3H (Main), and Table S4
+Rscript differentialAbundance_miloR_2Dvs3D.R
+
+## Run miloR differential abundance (3D vs foetal) and produce figures 3G and 3I (Main), as well S3C,S3D (Supplementary), and Table S5
+Rscript differentialAbundance_miloR_3Dvsfoetal.R
+
+## Run miloR differential abundance (early vs late foetal) and produce figure S3E (Supplementary)
+Rscript differentialAbundance_miloR_earlyLateFoetal.R
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

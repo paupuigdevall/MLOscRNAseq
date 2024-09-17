@@ -1,0 +1,4 @@
+foetal/cellRangerOutput/F10121620_D/outs/possorted_genome_bam.bam	F10121620_D
+foetal/cellRangerOutput/F10121620_B/outs/possorted_genome_bam.bam	F10121620_B
+foetal/cellRangerOutput/F10121620_C/outs/possorted_genome_bam.bam	F10121620_C
+foetal/cellRangerOutput/F10121620_A/outs/possorted_genome_bam.bam	F10121620_A

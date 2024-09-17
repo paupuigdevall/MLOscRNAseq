@@ -1,0 +1,4 @@
+F10121620_A	foetal/run40658/mid_organoids10621973,foetal/run40658/mid_organoids10621977,foetal/run40658/mid_organoids10621981,foetal/run40658/mid_organoids10621985
+F10121620_B	foetal/run40658/mid_organoids10621974,foetal/run40658/mid_organoids10621978,foetal/run40658/mid_organoids10621982,foetal/run40658/mid_organoids10621986
+F10121620_C	foetal/run40658/mid_organoids10621975,foetal/run40658/mid_organoids10621979,foetal/run40658/mid_organoids10621983,foetal/run40658/mid_organoids10621987
+F10121620_D	foetal/run40658/mid_organoids10621976,foetal/run40658/mid_organoids10621980,foetal/run40658/mid_organoids10621984,foetal/run40658/mid_organoids10621988

@@ -1,0 +1,17 @@
+name: oldrenv
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - r-base=4.1.3
+  - python
+  - imagemagick
+  - geos
+  - cairo
+  - r-seurat
+  - r-monocle3
+  - bioconductor-slingshot
+  - bioconductor-milor
+  - bioconductor-variantfiltering
+  - bioconductor-genomicranges

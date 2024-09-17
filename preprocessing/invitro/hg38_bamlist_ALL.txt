@@ -1,0 +1,9 @@
+invitro/run36169/mid_organoids8644017/cellranger-hg38/outs/possorted_genome_bam.bam	mid_organoids8644017
+invitro/run36169/mid_organoids8644113/cellranger-hg38/outs/possorted_genome_bam.bam	mid_organoids8644113
+invitro/run36169/mid_organoids8644114/cellranger-hg38/outs/possorted_genome_bam.bam	mid_organoids8644114
+invitro/run36169/mid_organoids8644018/cellranger-hg38/outs/possorted_genome_bam.bam	mid_organoids8644018
+invitro/run36169/mid_organoids8644112/cellranger-hg38/outs/possorted_genome_bam.bam	mid_organoids8644112
+invitro/run36169/mid_organoids8643921/cellranger-hg38/outs/possorted_genome_bam.bam	mid_organoids8643921
+invitro/run36169/mid_organoids8644016/cellranger-hg38/outs/possorted_genome_bam.bam	mid_organoids8644016
+invitro/run36169/mid_organoids8643920/cellranger-hg38/outs/possorted_genome_bam.bam	mid_organoids8643920
+invitro/run36169/mid_organoids8643922/cellranger-hg38/outs/possorted_genome_bam.bam	mid_organoids8643922
