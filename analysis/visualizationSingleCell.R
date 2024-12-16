@@ -71,10 +71,10 @@ fig3C
 dev.off()
 
 ####################
-## Supp Figure 3B ##
+## Supp Figure 7B ##
 ####################
 
-figS3B <- DimPlot(querySeurat, reduction =  "umap", label = FALSE, group.by="toPlotAnnot", cols=colVec, pt.size=0.1)+theme_bw()+
+figS7B <- DimPlot(querySeurat, reduction =  "umap", label = FALSE, group.by="toPlotAnnot", cols=colVec, pt.size=0.1)+theme_bw()+
   theme(plot.title=element_blank(),
         panel.border = element_blank(), panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -86,8 +86,8 @@ figS3B <- DimPlot(querySeurat, reduction =  "umap", label = FALSE, group.by="toP
         strip.text.x=element_text(size=7.5))+
   ggtitle("")+facet_wrap(~toPlotAnnot)+gghighlight()
 
-pdf(file=paste0(rootSupp,"suppFigure3B.pdf"))
-figS3B
+pdf(file=paste0(rootSupp,"suppFigure7B.pdf"))
+figS7B
 dev.off()
 
 
@@ -151,7 +151,7 @@ markers <- c("SOX18", "SOX17", "ERG", "BCL6B", "EPAS1", "FOXF2",
 
 
 ####################
-## Supp Figure 3A ##
+## Supp Figure 7A ##
 ####################
 
 querySeurat$toPlotAnnot <- factor(querySeurat$toPlotAnnot,
@@ -163,15 +163,15 @@ querySeurat$toPlotAnnot <- factor(querySeurat$toPlotAnnot,
 
 Idents(querySeurat) <- "toPlotAnnot"
 
-figS3A <- DotPlot(querySeurat, features = markers) + 
+figS7A <- DotPlot(querySeurat, features = markers) + 
   RotatedAxis()+
   theme(axis.text.x=element_text(size=7),
         legend.position="top")+
   xlab("")+ylab("")
 
 
-pdf(file=paste0(rootSupp,"suppFigure3A.pdf"), width=20, height = 6)
-figS3A
+pdf(file=paste0(rootSupp,"suppFigure7A.pdf"), width=20, height = 6)
+figS7A
 dev.off()
 
 
@@ -224,33 +224,6 @@ colVec <- setNames(getPalette(colourCount),
 
 moduleDim_long$CellType <- factor(moduleDim_long$CellType, levels=names(colVec))
 
-# facetModules2 <- moduleDim_long %>% group_split(CellType) %>%
-#   map(
-#     ~ggplot(., aes(x=UMAP_1, y=UMAP_2, col=ActivationScore))+
-#         geom_point(size=0.05)+
-#         theme_bw()+
-#         scale_colour_gradient(name="", low = "grey80", high = "red")+
-#         #scale_color_gradientn(name="",colours = terrain.colors(10))+
-#         theme(plot.title=element_blank(),
-#               panel.border = element_blank(), panel.grid.major = element_blank(),
-#               panel.grid.minor = element_blank(),
-#               axis.text.x=element_blank(),
-#               axis.ticks.x=element_blank(),
-#               axis.text.y=element_blank(),
-#               axis.ticks.y=element_blank(),
-#               axis.title=element_blank(),
-#               strip.text.x=element_text(size=6.5),
-#               legend.title=element_text(size=7),
-#               legend.text=element_text(size=7),
-#               legend.key.size=unit(0.5,"lines"))+
-#         ggtitle("")+facet_wrap(~CellType)) %>% 
-#   plot_grid(plotlist = ., align = 'hv', ncol = 4)
-#   
-# 
-# 
-# pdf(file=paste0(rootDir,"facetModules_perCellType2.pdf"))
-# plot(facetModules2)
-# dev.off()
 
 
 ####################

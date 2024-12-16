@@ -65,17 +65,56 @@ Rscript QC_stats.R
 
 cd ./analysis
 
-##  Produce figures 3B-3E (Main) & S3A,S3B (Supplementary)
+##  Produce figures 3B-3E (Main) & S7A,S7B (Supplementary)
 Rscript visualizationSingleCell.R
 
 ## Run miloR differential abundance (2D vs 3D) and produce figures 3F and 3H (Main), and Table S4
 Rscript differentialAbundance_miloR_2Dvs3D.R
 
-## Run miloR differential abundance (3D vs foetal) and produce figures 3G and 3I (Main), as well S3C,S3D (Supplementary), and Table S5
+## Run miloR differential abundance (3D vs foetal) and produce figures 3G and 3I (Main), as well S7C,S7D (Supplementary), and Table S5
 Rscript differentialAbundance_miloR_3Dvsfoetal.R
 
-## Run miloR differential abundance (early vs late foetal) and produce figure S3E (Supplementary)
+## Run miloR differential abundance (early vs late foetal) and produce figure S7E (Supplementary)
 Rscript differentialAbundance_miloR_earlyLateFoetal.R
+
+## Save an RDS Seurat file for each dataset to be integrated
+Rscript leMannoRawExp.R 		    ## La Manno et al. 2017 (Foetal)
+Rscript processRefLinnarson.R		## Braun et al. 2023 (Foetal)   ## Raw counts were downloaded from the complete processed dataset “HumanFetalBrainPool.h5”, deposited in the Github repository: https://github.com/linnarsson-lab/developing-human-brain
+# Zagare et al. 2022 (3D): Download and uncompress data under GSE133894 (Smits L et al.). Web access: https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE133894
+# Agarwal et al. 2020 (Post-mortem): Download and uncompress data under GSE140231. Web access: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE140231
+# Birtele et al. 2022 (Foetal): Download data under GSE192405 (Storm P et al.). Web access: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE192405. Metadata was included in a RDS seurat object sent by Parmar lab upon request. Name: "2_fetal_vm_week6_12.rds"
+# Fiorenzano et al. 2021 (3D): Download data under GSE168323 (Storm P et al.). Web access: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE168323. Metadata was included in a RDS seurat object sent by Parmar lab upon request. Name: "4_vm_organoids_d20_d30_d30_d60_d120.rds"
+# Our query (2D,3D,Foetal): Start from the "mlo_resolution075_Annot.RDS" object generated in processing with "QC_stats.R"
+
+
+## Integrate all the datasets, clean the metada
+Rscript integrationScript.R 
+
+## Produce figures 4A-4D (Main) and Table S6
+Rscript panelsFigure4ABCD.R
+
+## Produce figures 4E (Main) 
+Rscript panelsFigure4E.R
+
+## Produce figures 4F (Main) 
+Rscript panelsFigure4F.R
+
+## Run pseudotime analysis for Destiny and Slingshot
+Rscript destiny_pseudotime.R      
+Rscript slingshot_pseudotime.R    
+
+## Run pseudotime analysis for Monocle3. Produce figures 4G (Main), S8A, S8C, S8D (Supplementary) and Table S8
+Rscript monocle3_pseudotime.R    
+
+## Comparison pseudotime tools. Produce Table S7 and figure S8B (Supplementary).
+Rscript comparison_pseudotime.R
+
+## Analysis of pseudotime across all neurons from all datasets and across all DA subtypes. Produce figures 4H and 4I (Main) and figures S8E (Supplementary).
+Rscript analysis_pseudotime.R
+
+## Comparison of module activation scores. It produced figures 4J, 4K and 4L (Main) and figures S8G, S8H, S8I, S8J, S8F and S8K (Supplementary).
+Rscript analysis_modules.R
+
 
 
 

@@ -338,7 +338,7 @@ dev.off()
 
 
 ####################
-## Supp Figure 3C ##
+## Supp Figure 7C ##
 ####################
 
 ## Top-10 enriched GO terms
@@ -365,7 +365,7 @@ kk <- kk[order(kk$OddsRatio, decreasing=F),]
 
 kk$short <- factor(kk$short, levels=kk$short)
 
-figS3C <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
+figS7C <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
   geom_point()+
   ggtitle("")+
   theme_bw()+
@@ -377,8 +377,8 @@ figS3C <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
         axis.title=element_text(size=12, face="bold"),
         plot.title=element_text(hjust=0.5, size=14, face="bold"))
 
-pdf(file=paste0(rootSupp,"suppFigure3C.pdf"), width=6, height = 5)
-plot(figS3C)
+pdf(file=paste0(rootSupp,"suppFigure7C.pdf"), width=6, height = 5)
+plot(figS7C)
 dev.off()
 
 
@@ -446,7 +446,7 @@ saveRDS(report_testClust, file="saved/GOresults_DEcomparisons_downregulated.RDS"
 
 
 ####################
-## Supp Figure 3D ##
+## Supp Figure 7D ##
 ####################
 
 
@@ -490,7 +490,7 @@ figS3D <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
         axis.title=element_text(size=12, face="bold"),
         plot.title=element_text(hjust=0.5, size=14, face="bold"))
 
-pdf(file=paste0(rootSupp,"suppFigure3D.pdf"))
+pdf(file=paste0(rootSupp,"suppFigure7D.pdf"))
 plot(figS3D)
 dev.off()
 

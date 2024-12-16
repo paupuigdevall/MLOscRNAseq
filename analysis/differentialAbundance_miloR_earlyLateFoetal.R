@@ -186,7 +186,7 @@ da_results2$celltype <- factor(da_results2$celltype,
 
 
 ####################
-## Supp Figure 3E ##
+## Supp Figure 7E ##
 ####################
 
 DAbeeswarmCustomPlot <- ggplot(da_results2, aes(x=logFC, y=celltype, col=dotGroup))+
@@ -204,10 +204,10 @@ DAbeeswarmCustomPlot <- ggplot(da_results2, aes(x=logFC, y=celltype, col=dotGrou
 
 DAbeeswarmCustomPlotNoLegend <- DAbeeswarmCustomPlot + theme(legend.position="none")
 DAbeeswarmCustomPlotOnlyLegend <- cowplot::get_plot_component(DAbeeswarmCustomPlot, "guide-box", return_all = TRUE)[[4]]
-figS3E <- ggarrange(DAbeeswarmCustomPlotOnlyLegend, DAbeeswarmCustomPlotNoLegend, ncol = 1, heights = c(0.1,0.9))+bgcolor("white")
+figS7E <- ggarrange(DAbeeswarmCustomPlotOnlyLegend, DAbeeswarmCustomPlotNoLegend, ncol = 1, heights = c(0.1,0.9))+bgcolor("white")
 
-pdf(file=paste0(rootSupp,"suppFigure3E.pdf"), width=5.5, height = 6)
-plot(figS3E)
+pdf(file=paste0(rootSupp,"suppFigure7E.pdf"), width=5.5, height = 6)
+plot(figS7E)
 dev.off()
 
 
