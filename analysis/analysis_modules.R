@@ -30,8 +30,6 @@ setLast <- function(ctypesVec, lastCtype="Unk"){
   return(ordVec)
 }
 
-# mn.obj <- readRDS("/lustre/scratch126/cellgen/kilpinen/pp9/scRNA-seq/midbrainOrganoid/monocle3/saved/monocle_integratedlogNormCountsAllGenes.RDS")
-# gene_module_df <- readRDS("/lustre/scratch126/cellgen/kilpinen/pp9/scRNA-seq/midbrainOrganoid/monocle3/saved/monocle_geneModules_integratedlogNormCountsAllGenes.RDS")
 mn.obj <- readRDS("saved/monocle3/monocle_integratedlogNormCountsAllGenes.RDS")
 gene_module_df <- readRDS("saved/monocle3/monocle_geneModules_integratedlogNormCountsAllGenes.RDS")
 
