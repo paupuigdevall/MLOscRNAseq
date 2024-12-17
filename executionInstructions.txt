@@ -112,20 +112,11 @@ Rscript comparison_pseudotime.R
 ## Analysis of pseudotime across all neurons from all datasets and across all DA subtypes. Produce figures 4H and 4I (Main) and figures S8E (Supplementary).
 Rscript analysis_pseudotime.R
 
-## Comparison of module activation scores. It produced figures 4J, 4K and 4L (Main) and figures S8G, S8H, S8I, S8J, S8F and S8K (Supplementary).
+## Comparison of module activation scores. It produces figures 4J, 4K and 4L (Main) and figures S8G, S8H, S8I, S8J, S8F and S8K (Supplementary).
 Rscript analysis_modules.R
 
-
-
-
-
-
-
-
-
-
-
-
+## Comparison of patient vs control organoids. It produces figures 7F, 7G, 7H, 7I (Main) and figures S18D (Supplementary).
+Rscript functional_analysis.R
 
 
 
