@@ -65,7 +65,7 @@ Rscript QC_stats.R
 
 cd ./analysis
 
-##  Produce figures 3B-3E (Main) & S7A,S7B (Supplementary)
+##  Produce figures 3B-3D (Main) & S7A,S7B,S8B (Supplementary)
 Rscript visualizationSingleCell.R
 
 ## Run miloR differential abundance (2D vs 3D) and produce figures 3F and 3H (Main), and Table S4

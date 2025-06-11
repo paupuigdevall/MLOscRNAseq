@@ -13,13 +13,14 @@ library(cowplot)
 
 rootMain <- "figures/main/"
 rootSupp <- "figures/supp/"
+rootOthers <- "figures/others/"
 
 querySeurat <- readRDS("saved/toZenodo/mlo_resolution075_Annot.RDS")
 
 
 
 clustAnnot <- c(0:23)
-names(clustAnnot) <- c("hRgl2/immAstro","hNbDA","hProgFPM","OPC_1","VascLepto","hDA1b","hRgl1","hDA1a","hRgl3_caudal","hDA2","hProgM",
+names(clustAnnot) <- c("hRgl2/immAstro","hNbDA","hProgFPM","OPC_1","VLMC","hDA1b","hRgl1","hDA1a","hRgl3_caudal","hDA2","hProgM",
                        "hPreDA","hMidPre","hMgl","hEndo","hNbGaba","hNPro","hDA3/hGABA/hSer","Unk","hRgl4/MultiEpend","Astro","hPeric","Eryth","OPC_2")
 
 ### 
@@ -27,8 +28,60 @@ names(clustAnnot) <- c("hRgl2/immAstro","hNbDA","hProgFPM","OPC_1","VascLepto","
 querySeurat$seurat_clusters_24_Annot <- names(clustAnnot[querySeurat$seurat_clusters])
 querySeurat$toPlotAnnot <- querySeurat$seurat_clusters_24_Annot
 querySeurat$toPlotAnnot <- gsub("_","", querySeurat$toPlotAnnot)
+
+
+## Run hierarchical clustering and visualization (for low-resolution annotation)
+
+resolutions <- c(0.1,1)
+querySeurat_harmony <- querySeurat
+querySeurat_harmony@reductions$pca <- NULL
+querySeurat_harmony@reductions$umap <- NULL
+querySeurat_harmony@reductions$ref.pca <- NULL
+querySeurat_harmony@reductions$ref.umap <- NULL
+
+allmeta <- sapply(resolutions, function(t){
+  
+  querySeurat_harmony <- querySeurat_harmony %>%
+    RunUMAP(reduction = "harmony", dims = 1:20) %>%
+    FindNeighbors(reduction = "harmony", dims = 1:10) %>%
+    FindClusters(resolution = t) %>%
+    identity()
+  
+  return(querySeurat_harmony[[paste0("RNA_snn_res.",t)]])
+  
+}, simplify=T)
+
+allmeta <- do.call("cbind", allmeta)
+
+querySeurat_harmony@meta.data <- cbind(querySeurat_harmony@meta.data,
+                                       allmeta)
+
+testforclustree <- clustree(querySeurat_harmony, prefix = "RNA_snn_res.")
+pdf(file=paste0(rootOthers,"test_clustree.pdf"), width=12, height = 12)
+plot(testforclustree)
+dev.off()
+
+### New low-resolution annotation (Grouping of 24 cell types in 10 broader categories)
+
+clustAnnot_simplified <- c("hProgFPM"="Early Midbrain Prog", "hProgM"="Highly prolif NSC", "hMidPre"="Early Midbrain Prog", "hRgl1"="Early Midbrain Prog", "hRgl4/MultiEpend"="Early Midbrain Prog",
+                           "hPreDA"="Neuron Prog", "hNPro"="Neuron Prog",
+                           "OPC1"="Late Midbrain Prog", "OPC2"="Late Midbrain Prog", "hRgl2/immAstro"="Late Midbrain Prog", "hRgl3caudal"="Late Midbrain Prog",
+                           "hNbDA"="Immature Neurons",
+                           "hNbGaba"="Immature Neurons",
+                           "hDA1a"="Mature Neurons", "hDA1b"="Mature Neurons", "hDA2"="Mature Neurons", "hDA3/hGABA/hSer"="Mature Neurons",
+                           "hMgl"="Microglia",
+                           "Astro"="Astrocytes",
+                           "VLMC"="Perivascular cells", "hPeric"="Perivascular cells", "hEndo"="Perivascular cells",
+                           "Unk"="Others", "Eryth"="Others")
+
+querySeurat$lowRes <- unname(clustAnnot_simplified[match(querySeurat$toPlotAnnot, names(clustAnnot_simplified))])
+querySeurat$lowRes <- factor(querySeurat$lowRes,
+                               levels=c(sort(unique(querySeurat$lowRes))[-match("Others", sort(unique(querySeurat$lowRes)))],"Others"))
+
 querySeurat <- querySeurat[,!(grepl("Patient", querySeurat$donorDimensions) | grepl("Crispr", querySeurat$donorDimensions))]
 
+
+## Palette color for the high-resolution annotation
 
 setLast <- function(ctypesVec, lastCtype="Unk"){
   
@@ -45,11 +98,31 @@ colVec <- setNames(getPalette(colourCount),
 saveRDS(colVec, file="saved/others/colVec_ctypesOriginal.RDS")
 
 
+## Palette color for the low-resolution annotation
+
+colVec_final <- c(
+  "Astrocytes"           = "#E41A1C",
+  "Early Midbrain Prog"  = "#fa8841",
+  "Late Midbrain Prog"   = "#7E6E85",
+  "Neuron Prog"          = "#E1C62F",
+  "Highly prolif NSC"    = "#B75F49",
+  "Immature Neurons"     = "#48A462",
+  "Mature Neurons"       = "#48d1cc",
+  "Microglia"            = "#4A72A6",
+  "Perivascular cells"   = "#EC83BA",
+  "Others"               = "grey10"
+)
+
+saveRDS(colVec_final, file="saved/others/colVec_lowRes_final.RDS")
+
+querySeurat$lowRes <- factor(querySeurat$lowRes, levels=names(colVec_final))
+
+
 ####################
 ## Main Figure 3C ##
 ####################
 
-fig3C <- DimPlot(querySeurat, reduction = "umap", group.by = "toPlotAnnot", label = FALSE, label.size = 2.1,cols=alpha(colVec,0.6),
+fig3C_with_legend <- DimPlot(querySeurat, reduction = "umap", group.by = "lowRes", label = FALSE, label.size = 2.1, cols=alpha(colVec_final,0.6),
               repel = TRUE, )+ggtitle("")+
   theme_bw()+
   #legend.spacing.y = unit(0.05, 'cm'))+
@@ -63,18 +136,30 @@ fig3C <- DimPlot(querySeurat, reduction = "umap", group.by = "toPlotAnnot", labe
         panel.grid.minor = element_blank(),
         axis.text=element_blank(),
         axis.ticks=element_blank(),
-        axis.title=element_blank())+
-  theme(legend.position="none")
+        axis.title=element_blank())
+
+fig3C <- fig3C_with_legend + theme(legend.position="none")
 
 pdf(file=paste0(rootMain,"mainFigure3C.pdf"), width=4, height = 4)
 fig3C
 dev.off()
 
+### Figure 3C legend (alone) ###
+
+fig3C_only_legend <- cowplot::get_legend(fig3C_with_legend)
+
+pdf(file=paste0(rootMain,"mainFigure3C_onlyLegend.pdf"), width=3, height = 3)
+plot(fig3C_only_legend)
+dev.off()
+
+
 ####################
-## Supp Figure 7B ##
+## Supp Figure 8B ##
 ####################
 
-figS7B <- DimPlot(querySeurat, reduction =  "umap", label = FALSE, group.by="toPlotAnnot", cols=colVec, pt.size=0.1)+theme_bw()+
+querySeurat$toPlotAnnot <- factor(querySeurat$toPlotAnnot, levels=names(colVec))
+
+figS8B <- DimPlot(querySeurat, reduction =  "umap", label = FALSE, group.by="toPlotAnnot", cols=colVec, pt.size=0.1)+theme_bw()+
   theme(plot.title=element_blank(),
         panel.border = element_blank(), panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -86,13 +171,13 @@ figS7B <- DimPlot(querySeurat, reduction =  "umap", label = FALSE, group.by="toP
         strip.text.x=element_text(size=7.5))+
   ggtitle("")+facet_wrap(~toPlotAnnot)+gghighlight()
 
-pdf(file=paste0(rootSupp,"suppFigure7B.pdf"))
-figS7B
+pdf(file=paste0(rootSupp,"suppFigure8B.pdf"))
+figS8B
 dev.off()
 
 
 ####################
-## Main Figure 3E ##
+## Main Figure 3B ##
 ####################
 
 
@@ -100,10 +185,11 @@ querySeurat$originDimensions <- gsub("foetal","Foetal",querySeurat$originDimensi
 
 getPalette = colorRampPalette(brewer.pal(3, "Set1"))
 colourCount = length(unique(querySeurat$originDimensions))
-colVec <- setNames(getPalette(colourCount),
+colVec_models <- setNames(getPalette(colourCount),
                    sort(unique(querySeurat$originDimensions)))
 
-fig3E <- DimPlot(querySeurat, reduction =  "umap", label = FALSE, group.by="originDimensions", cols=colVec, pt.size=0.1)+theme_bw()+
+
+fig3B <- DimPlot(querySeurat, reduction =  "umap", label = FALSE, group.by="originDimensions", cols=colVec_models, pt.size=0.1)+theme_bw()+
   theme(plot.title=element_blank(),
         panel.border = element_blank(), panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -113,10 +199,10 @@ fig3E <- DimPlot(querySeurat, reduction =  "umap", label = FALSE, group.by="orig
         axis.ticks.y=element_blank(),
         axis.title=element_blank(),
         strip.text.x=element_text(size=10))+
-  ggtitle("")+facet_wrap(~originDimensions)+gghighlight()
+  ggtitle("")+facet_wrap(~originDimensions, ncol=1)+gghighlight()
 
-pdf(file=paste0(rootMain,"mainFigure3E.pdf"), width=8, height = 3)
-fig3E
+pdf(file=paste0(rootMain,"mainFigure3B.pdf"), width=3, height = 8)
+fig3B
 dev.off()
 
 
@@ -155,7 +241,7 @@ markers <- c("SOX18", "SOX17", "ERG", "BCL6B", "EPAS1", "FOXF2",
 ####################
 
 querySeurat$toPlotAnnot <- factor(querySeurat$toPlotAnnot,
-                                  levels=rev(c("hEndo","hPeric","Eryth","VascLepto",
+                                  levels=rev(c("hEndo","hPeric","Eryth","VLMC",
                                            "hMgl","Astro","OPC1","OPC2",
                                            "hRgl1","hRgl2/immAstro","hRgl3caudal","hRgl4/MultiEpend",
                                            "hProgFPM","hProgM","hNPro","hMidPre","hPreDA",
@@ -164,13 +250,17 @@ querySeurat$toPlotAnnot <- factor(querySeurat$toPlotAnnot,
 Idents(querySeurat) <- "toPlotAnnot"
 
 figS7A <- DotPlot(querySeurat, features = markers) + 
-  RotatedAxis()+
-  theme(axis.text.x=element_text(size=7),
-        legend.position="top")+
-  xlab("")+ylab("")
+  RotatedAxis() +
+  theme(axis.text.x = element_text(size = 10),
+        axis.text.y= element_text(size=8),
+        legend.position = "top",
+        legend.key.size = unit(0.32, "cm"),  
+        legend.text = element_text(size = 7.5),  
+        legend.title = element_text(size = 8.5))+ 
+  coord_flip() +
+  ylab("") + xlab("")
 
-
-pdf(file=paste0(rootSupp,"suppFigure7A.pdf"), width=20, height = 6)
+pdf(file=paste0(rootSupp,"suppFigure7A.pdf"), width=6, height = 18)
 figS7A
 dev.off()
 
@@ -179,11 +269,11 @@ dev.off()
 modulesToCompute <- list("hEndo"=c("SOX18", "SOX17", "ERG", "BCL6B", "EPAS1", "FOXF2"),
                          "hPeric"=c("FOXS1", "TBX2", "FOXD1", "FOXD2", "FOXC1", "JUNB"),
                          "Eryth"=c("HBG1", "HBG2", "HBA1", "HBA2", "HBB", "IGFBP7"),
-                         "VascLepto"=c("COL1A1", "COL1A2", "PDGFRA", "LUM", "FBLN2", "VCAN"),
+                         "VLMC"=c("COL1A1", "COL1A2", "PDGFRA", "LUM", "FBLN2", "VCAN"),
                          "hMgl"=c("SPI1", "IRF8", "IKZF1", "REL", "MEF2C"),
                          "Astro"=c("S100B", "GFAP", "AQP4", "ALDH1A1", "SOX9"),
-                         "OPC1"=c("OLIG1", "OLIG2", "ETV1", "ETV5", "ZMAT3"),
-                         "OPC2"=c("OLIG1", "OLIG2", "ETV1", "ETV5", "ZMAT3", "SOX10"),
+                         "OPC1"=c("OLIG1", "OLIG2", "ETV1", "ETV5", "ZMAT3","SOX10"),
+                         "OPC2"=c("OLIG1", "OLIG2", "ETV1", "ETV5", "ZMAT3"),
                          "hRgl1"=c("MSX1", "GABPB2", "SAMD13", "CORIN", "SOX6", "PBX1", "FOXA2"),
                          "hRgl2/immAstro"=c("MSX1", "GABPB2", "SAMD13", "CORIN", "SOX6", "PBX1", "AQP4", "ALDH1L1", "S100B"),
                          "hRgl3caudal"=c("GLIS3","DLK1","TTR","TFPI2", "SDC2"),
@@ -208,7 +298,6 @@ moduleValues <- sapply(modulesToCompute, function(x){
   
 }, simplify=F)
 
-
 moduleValues <- do.call("cbind", moduleValues)
 querySeurat@meta.data <- cbind(querySeurat@meta.data, moduleValues[match(rownames(querySeurat@meta.data), rownames(moduleValues)),])
 
@@ -227,7 +316,7 @@ moduleDim_long$CellType <- factor(moduleDim_long$CellType, levels=names(colVec))
 
 
 ####################
-## Main Figure 3B ##
+## Supp Figure 7B ##
 ####################
 
 moduleDim2 <- cbind(querySeurat@meta.data[,c("toPlotAnnot","seurat_clusters_24_Annot")], moduleValues)
@@ -252,18 +341,16 @@ rownames(allctypes) <- NULL
 
 allctypes$toPlotAnnot <- factor(allctypes$toPlotAnnot , levels=setLast(unique(allctypes$toPlotAnnot), lastCtype="OC"))
 
-fig3B <- ggplot(data=allctypes, aes(x=toPlotAnnot, y=ActivationScore,))+
+figS7B <- ggplot(data=allctypes, aes(x=toPlotAnnot, y=ActivationScore,))+
   theme_bw()+
-  facet_wrap(~ModulesCellType, scales="free")+
+  facet_wrap(~ModulesCellType, scales="free", ncol=2)+
   geom_violin(fill="grey70")+
   geom_boxplot(width=0.05, outlier.shape=NA)+
-  xlab("Module activation score in Table S2")
+  xlab("Module activation score")
 
-pdf(file=paste0(rootMain,"mainFigure3B.pdf"), width=10, height = 6)
-plot(fig3B)
+pdf(file=paste0(rootSupp,"suppFigure7B.pdf"), width=5, height = 18)
+plot(figS7B)
 dev.off()
-
-
 
 
 #################################
@@ -293,8 +380,7 @@ computeCtypeProp <- function(querySeurat, ctype="toPlotAnnot"){
   
 }
 
-ctypeProp_annot <- computeCtypeProp(querySeurat, ctype="toPlotAnnot")
-#ctypeProp_annot2 <- computeCtypeProp(querySeurat, ctype="toPlotAnnot2")
+ctypeProp_annot2 <- computeCtypeProp(querySeurat, ctype="lowRes")
 
 
 sampleCellsNum <- as.data.frame(table(querySeurat$dimensionsTime2))
@@ -303,8 +389,15 @@ sampleCellsNum$dimensionsTime2 <- factor(sampleCellsNum$dimensionsTime2,
                                            levels=c("2D-40","2D-70","3D-40","3D-70","3D-120",
                                                     "foetal-PCW10","foetal-PCW12","foetal-PCW16","foetal-PCW20"))
 
-## number of cells for each 10x sample
 
+
+ctypeProp_annot2$lowRes <- factor(ctypeProp_annot2$lowRes, levels=c("Astrocytes","Early Midbrain Prog","Late Midbrain Prog","Highly prolif NSC",
+                                                                        "Neuron Prog","Immature Neurons","Mature Neurons","Microglia",
+                                                                        "Perivascular cells", "Others"))
+
+ctypeProp_annot2$dimensionsTime2 <- factor(ctypeProp_annot2$dimensionsTime2,
+                                           levels=c("2D-40","2D-70","3D-40","3D-70","3D-120",
+                                                    "foetal-PCW10","foetal-PCW12","foetal-PCW16","foetal-PCW20"))
 
 ####################
 ## Main Figure 3D ##
@@ -327,32 +420,21 @@ dev.off()
 
 ## Specific-level (barplot + cells)
 
-
-getPalette = colorRampPalette(brewer.pal(9, "Set1"))
-colourCount = length(sort(levels(ctypeProp_annot$toPlotAnnot)))
-colVec <- setNames(getPalette(colourCount),
-                   setLast(sort(levels(ctypeProp_annot$toPlotAnnot)), lastCtype=c("Unk")))
-
-ctypeProp_annot$toPlotAnnot <- factor(ctypeProp_annot$toPlotAnnot, levels=names(colVec))
-ctypeProp_annot$dimensionsTime2 <- factor(ctypeProp_annot$dimensionsTime2,
-                                           levels=c("2D-40","2D-70","3D-40","3D-70","3D-120",
-                                                    "foetal-PCW10","foetal-PCW12","foetal-PCW16","foetal-PCW20"))
-
-fig3D_u <- ggplot(ctypeProp_annot, aes(fill=toPlotAnnot, x=dimensionsTime2, y=Percentage))+
+fig3D_u <- ggplot(ctypeProp_annot2, aes(fill=lowRes, x=dimensionsTime2, y=Percentage))+
   geom_bar(position="fill", stat="identity")+
   theme_bw()+
   theme(plot.title=element_text(size=18, face="bold", hjust=0.5),
-        legend.title = element_text(size = 9, face="bold", hjust=0.5),
-        legend.text  = element_text(size = 8),
-        legend.key.size = unit(0.3, "lines"),
-        axis.text.x = element_text(size=14, angle=90, vjust=0.5, hjust=1),
-        axis.text.y = element_text(size=14),
-        axis.title=element_text(size=16),
+        legend.title = element_text(size = 11, face="bold", hjust=0.5),
+        legend.text  = element_text(size = 9),
+        legend.key.size = unit(0.5, "lines"),
+        axis.text.x = element_text(size=9, angle=90, vjust=0.5, hjust=1),
+        axis.text.y = element_text(size=9),
+        axis.title=element_text(size=11),
         strip.text.x = element_text(size = 10)) +
   guides(shape = guide_legend(override.aes = list(size = 5)),
          fill = guide_legend(override.aes = list(size = 5), ncol=1))+
   scale_fill_manual(name="Cell types",
-                    values = colVec)+
+                    values = colVec_final)+
   scale_y_continuous(labels = scales::percent, breaks=seq(0,1,0.2))+
   xlab("")+
   ylab("Percentage")
