@@ -24,7 +24,7 @@ rootSupp <- "figures/supp/"
 
 querySeurat <- readRDS("saved/toZenodo/mlo_resolution075_Annot.RDS")
 clustAnnot <- c(0:23)
-names(clustAnnot) <- c("hRgl2/immAstro","hNbDA","hProgFPM","OPC_1","VascLepto","hDA1b","hRgl1","hDA1a","hRgl3_caudal","hDA2","hProgM",
+names(clustAnnot) <- c("hRgl2/immAstro","hNbDA","hProgFPM","OPC_1","VLMC","hDA1b","hRgl1","hDA1a","hRgl3_caudal","hDA2","hProgM",
                        "hPreDA","hMidPre","hMgl","hEndo","hNbGaba","hNPro","hDA3/hGABA/hSer","Unk","hRgl4/MultiEpend","Astro","hPeric","Eryth","OPC_2")
 
 ### 
@@ -50,8 +50,6 @@ dim(milo.obj)
 tmp <- as.data.frame(table(querySeurat.sce$toPlotAnnot))
 colnames(tmp) <- c("Cluster", "Number of cells")
 kable(tmp)
-
-#otherFigs <- "/home/jovyan/plots/midBrainOrganoid/paperMLO/figuresSingleCell/monocle/foetalvs3d/retest/"
 
 plotUMAP <- plotReducedDim(milo.obj, colour_by="toPlotAnnot",
                            dimred = "UMAP", point_size=0.1)+
@@ -185,11 +183,11 @@ da_results2$celltype <- factor(da_results2$celltype,
 
 
 ####################
-## Main Figure 3G ##
+## Main Figure 3F ##
 ####################
 
 
-fig3G <- ggplot(da_results2, aes(x=logFC, y=celltype, col=dotGroup))+
+fig3F <- ggplot(da_results2, aes(x=logFC, y=celltype, col=dotGroup))+
   theme_bw()+
   geom_quasirandom(alpha=0.7, groupOnX = F)+
   #scale_color_manual(name="FDR<0.1",values=c("#663300","#000099","grey80"))+
@@ -204,8 +202,8 @@ fig3G <- ggplot(da_results2, aes(x=logFC, y=celltype, col=dotGroup))+
   guides(color = guide_legend(override.aes = list(size = 9)))
 
 
-pdf(file=paste0(rootMain,"mainFigure3G.pdf"), width=5.5, height = 6)
-plot(fig3G)
+pdf(file=paste0(rootMain,"mainFigure3F.pdf"), width=5.5, height = 6)
+plot(fig3F)
 dev.off()
 
 
@@ -216,7 +214,7 @@ dev.off()
 querySeurat <- readRDS("saved/toZenodo/mlo_resolution075_Annot.RDS")
 
 clustAnnot <- c(0:23)
-names(clustAnnot) <- c("hRgl2/immAstro","hNbDA","hProgFPM","OPC_1","VascLepto","hDA1b","hRgl1","hDA1a","hRgl3_caudal","hDA2","hProgM",
+names(clustAnnot) <- c("hRgl2/immAstro","hNbDA","hProgFPM","OPC_1","VLMC","hDA1b","hRgl1","hDA1a","hRgl3_caudal","hDA2","hProgM",
                        "hPreDA","hMidPre","hMgl","hEndo","hNbGaba","hNPro","hDA3/hGABA/hSer","Unk","hRgl4/MultiEpend","Astro","hPeric","Eryth","OPC_2")
 
 ### 
@@ -287,7 +285,7 @@ saveRDS(report_testClust, file="saved/GOresults_DEcomparisons_upregulated.RDS")
 
 
 ####################
-## Main Figure 3I ##
+## Main Figure 3H ##
 ####################
 
 ## Top-5 enriched GO terms
@@ -320,7 +318,7 @@ kk <- kk[order(kk$OddsRatio, decreasing=F),]
 
 kk$short <- factor(kk$short, levels=kk$short)
 
-fig3I <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
+fig3H <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
   geom_point()+
   ggtitle("")+
   theme_bw()+
@@ -332,13 +330,13 @@ fig3I <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
         axis.title=element_text(size=12, face="bold"),
         plot.title=element_text(hjust=0.5, size=14, face="bold"))
 
-pdf(file=paste0(rootMain,"mainFigure3I.pdf"), width=6, height = 3.5)
-plot(fig3I)
+pdf(file=paste0(rootMain,"mainFigure3H.pdf"), width=6, height = 3.5)
+plot(fig3H)
 dev.off()
 
 
 ####################
-## Supp Figure 7C ##
+## Supp Figure 8C ##
 ####################
 
 ## Top-10 enriched GO terms
@@ -365,7 +363,7 @@ kk <- kk[order(kk$OddsRatio, decreasing=F),]
 
 kk$short <- factor(kk$short, levels=kk$short)
 
-figS7C <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
+figS8C <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
   geom_point()+
   ggtitle("")+
   theme_bw()+
@@ -377,8 +375,8 @@ figS7C <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
         axis.title=element_text(size=12, face="bold"),
         plot.title=element_text(hjust=0.5, size=14, face="bold"))
 
-pdf(file=paste0(rootSupp,"suppFigure7C.pdf"), width=6, height = 5)
-plot(figS7C)
+pdf(file=paste0(rootSupp,"suppFigure8C.pdf"), width=6, height = 5)
+plot(figS8C)
 dev.off()
 
 
@@ -446,7 +444,7 @@ saveRDS(report_testClust, file="saved/GOresults_DEcomparisons_downregulated.RDS"
 
 
 ####################
-## Supp Figure 7D ##
+## Supp Figure 8D ##
 ####################
 
 
@@ -479,7 +477,7 @@ kk <- kk[order(kk$OddsRatio, decreasing=F),]
 
 kk$short <- factor(kk$short, levels=kk$short)
 
-figS3D <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
+figS8D <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
   geom_point()+
   ggtitle("")+
   theme_bw()+
@@ -490,8 +488,8 @@ figS3D <- ggplot(kk, aes(x=OddsRatio, y=short, size=Count, col=-log10(Pvalue)))+
         axis.title=element_text(size=12, face="bold"),
         plot.title=element_text(hjust=0.5, size=14, face="bold"))
 
-pdf(file=paste0(rootSupp,"suppFigure7D.pdf"))
-plot(figS3D)
+pdf(file=paste0(rootSupp,"suppFigure8D.pdf"))
+plot(figS8D)
 dev.off()
 
 

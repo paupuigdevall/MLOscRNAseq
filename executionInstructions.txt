@@ -68,14 +68,34 @@ cd ./analysis
 ##  Produce figures 3B-3D (Main) & S7A,S7B,S8B (Supplementary)
 Rscript visualizationSingleCell.R
 
-## Run miloR differential abundance (2D vs 3D) and produce figures 3F and 3H (Main), and Table S4
+## Run miloR differential abundance (2D vs 3D) and produce figures 3E and 3G (Main), and Table S4
 Rscript differentialAbundance_miloR_2Dvs3D.R
 
-## Run miloR differential abundance (3D vs foetal) and produce figures 3G and 3I (Main), as well S7C,S7D (Supplementary), and Table S5
+## Run miloR differential abundance (3D vs foetal) and produce figures 3F and 3H (Main), as well S8C,S8D (Supplementary), and Table S5
 Rscript differentialAbundance_miloR_3Dvsfoetal.R
 
-## Run miloR differential abundance (early vs late foetal) and produce figure S7E (Supplementary)
+## Run miloR differential abundance (early vs late foetal) and produce figure S8E (Supplementary)
 Rscript differentialAbundance_miloR_earlyLateFoetal.R
+
+## Run trajectory analysis
+
+### Conversion of ".RDS" object to ".h5ad"
+Rscript conversion_to_h5ad.R
+
+### Inference of neuronal and astrocytic lineages. It produces figure 3I (Main), as well S9A-C (Supplementary)
+Jupyter notebook: notebooks/definingTrajectories-notebook.ipynb
+
+### Computation of highly-variable genes per trajectory
+Jupyter notebook: notebooks/hvgs_mDAneurons-notebook.ipynb
+Jupyter notebook: notebooks/hvgs_astrocytes-notebook.ipynb
+
+### Downstream analysis: PCA loadings, density plots and diffusion pseudotime (per trajectory). They produce figure 3J (Main), as well S9F-I and S9L-O (Supplementary)
+Jupyter notebook: notebooks/lineage_neurons-part1.ipynb
+Jupyter notebook: notebooks/lineage_astrocytes-part1.ipynb
+
+### Trajectory-based differential expression analysis. They produce figure 3K (Main), as well S9P (Supplementary) and Tables S15 and S16.
+Rscript tradeSeq_run_neuro.R
+Rscript tradeSeq_run_astro.R
 
 ## Save an RDS Seurat file for each dataset to be integrated
 Rscript leMannoRawExp.R 		    ## La Manno et al. 2017 (Foetal)
@@ -85,7 +105,6 @@ Rscript processRefLinnarson.R		## Braun et al. 2023 (Foetal)   ## Raw counts wer
 # Birtele et al. 2022 (Foetal): Download data under GSE192405 (Storm P et al.). Web access: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE192405. Metadata was included in a RDS seurat object sent by Parmar lab upon request. Name: "2_fetal_vm_week6_12.rds"
 # Fiorenzano et al. 2021 (3D): Download data under GSE168323 (Storm P et al.). Web access: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE168323. Metadata was included in a RDS seurat object sent by Parmar lab upon request. Name: "4_vm_organoids_d20_d30_d30_d60_d120.rds"
 # Our query (2D,3D,Foetal): Start from the "mlo_resolution075_Annot.RDS" object generated in processing with "QC_stats.R"
-
 
 ## Integrate all the datasets, clean the metada
 Rscript integrationScript.R 

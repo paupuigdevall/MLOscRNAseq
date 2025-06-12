@@ -23,7 +23,7 @@ rootMain <- "figures/main/"
 
 querySeurat <- readRDS("saved/toZenodo/mlo_resolution075_Annot.RDS")
 clustAnnot <- c(0:23)
-names(clustAnnot) <- c("hRgl2/immAstro","hNbDA","hProgFPM","OPC_1","VascLepto","hDA1b","hRgl1","hDA1a","hRgl3_caudal","hDA2","hProgM",
+names(clustAnnot) <- c("hRgl2/immAstro","hNbDA","hProgFPM","OPC_1","VLMC","hDA1b","hRgl1","hDA1a","hRgl3_caudal","hDA2","hProgM",
                        "hPreDA","hMidPre","hMgl","hEndo","hNbGaba","hNPro","hDA3/hGABA/hSer","Unk","hRgl4/MultiEpend","Astro","hPeric","Eryth","OPC_2")
 
 ### 
@@ -145,7 +145,7 @@ da_results_cov$celltype <- ifelse(da_results_cov$toPlotAnnot_fraction < 0.7, "Mi
 
 
 ####################
-## Main Figure 3F ##
+## Main Figure 3E ##
 ####################
 
 mask_3d <- da_results_cov$FDR<0.1 & da_results_cov$logFC>0
@@ -164,7 +164,7 @@ if (length(ctypesToRemove)){
 da_results_cov2$celltype <- factor(da_results_cov2$celltype,
                                levels=rev(sort(unique(da_results_cov2$celltype))))
 
-fig3F <- ggplot(da_results_cov2, aes(x=logFC, y=celltype, col=dotGroup))+
+fig3E <- ggplot(da_results_cov2, aes(x=logFC, y=celltype, col=dotGroup))+
   theme_bw()+
   geom_quasirandom(alpha=0.7, groupOnX = F)+
   scale_color_manual(name="FDR<0.1",values=c("#E41A1C","#377EB8","grey80"))+
@@ -177,8 +177,8 @@ fig3F <- ggplot(da_results_cov2, aes(x=logFC, y=celltype, col=dotGroup))+
   scale_x_continuous(limits=c(-8,8), breaks=seq(-8,8,2))+
   guides(color = guide_legend(override.aes = list(size = 9)))
 
-pdf(file=paste0(rootMain,"mainFigure3F.pdf"), width=5, height = 6)
-plot(fig3F)
+pdf(file=paste0(rootMain,"mainFigure3E.pdf"), width=5, height = 6)
+plot(fig3E)
 dev.off()
 
 
@@ -402,10 +402,10 @@ allres_intersect$short <- factor(allres_intersect$short, levels=unique(allres_in
 
 
 ####################
-## Main Figure 3H ##
+## Main Figure 3G ##
 ####################
 
-fig3H <- ggplot(data=allres_intersect, aes(x=testNew, y=short, fill=OddsRatio))+
+fig3G <- ggplot(data=allres_intersect, aes(x=testNew, y=short, fill=OddsRatio))+
   theme_bw()+
   geom_tile()+
   geom_point(data=allres_intersect, aes(size=-log10(p_value)), inherit.aes=T)+
@@ -417,8 +417,8 @@ fig3H <- ggplot(data=allres_intersect, aes(x=testNew, y=short, fill=OddsRatio))+
   labs(size=expression("-log"[10]*"pval"))
 
 
-pdf(file=paste0(rootMain,"mainFigure3H.pdf"), width=6, height = 4)
-plot(fig3H)
+pdf(file=paste0(rootMain,"mainFigure3G.pdf"), width=6, height = 4)
+plot(fig3G)
 dev.off()
 
 

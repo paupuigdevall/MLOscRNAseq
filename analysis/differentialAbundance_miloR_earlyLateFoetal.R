@@ -25,7 +25,7 @@ rootSupp <- "figures/supp/"
 querySeurat <- readRDS("saved/toZenodo/mlo_resolution075_Annot.RDS")
 
 clustAnnot <- c(0:23)
-names(clustAnnot) <- c("hRgl2/immAstro","hNbDA","hProgFPM","OPC_1","VascLepto","hDA1b","hRgl1","hDA1a","hRgl3_caudal","hDA2","hProgM",
+names(clustAnnot) <- c("hRgl2/immAstro","hNbDA","hProgFPM","OPC_1","VLMC","hDA1b","hRgl1","hDA1a","hRgl3_caudal","hDA2","hProgM",
                        "hPreDA","hMidPre","hMgl","hEndo","hNbGaba","hNPro","hDA3/hGABA/hSer","Unk","hRgl4/MultiEpend","Astro","hPeric","Eryth","OPC_2")
 
 querySeurat$seurat_clusters_24_Annot <- names(clustAnnot[querySeurat$seurat_clusters])
@@ -186,7 +186,7 @@ da_results2$celltype <- factor(da_results2$celltype,
 
 
 ####################
-## Supp Figure 7E ##
+## Supp Figure 8E ##
 ####################
 
 DAbeeswarmCustomPlot <- ggplot(da_results2, aes(x=logFC, y=celltype, col=dotGroup))+
@@ -204,10 +204,10 @@ DAbeeswarmCustomPlot <- ggplot(da_results2, aes(x=logFC, y=celltype, col=dotGrou
 
 DAbeeswarmCustomPlotNoLegend <- DAbeeswarmCustomPlot + theme(legend.position="none")
 DAbeeswarmCustomPlotOnlyLegend <- cowplot::get_plot_component(DAbeeswarmCustomPlot, "guide-box", return_all = TRUE)[[4]]
-figS7E <- ggarrange(DAbeeswarmCustomPlotOnlyLegend, DAbeeswarmCustomPlotNoLegend, ncol = 1, heights = c(0.1,0.9))+bgcolor("white")
+figS8E <- ggarrange(DAbeeswarmCustomPlotOnlyLegend, DAbeeswarmCustomPlotNoLegend, ncol = 1, heights = c(0.1,0.9))+bgcolor("white")
 
-pdf(file=paste0(rootSupp,"suppFigure7E.pdf"), width=5.5, height = 6)
-plot(figS7E)
+pdf(file=paste0(rootSupp,"suppFigure8E.pdf"), width=5.5, height = 6)
+plot(figS8E)
 dev.off()
 
 
