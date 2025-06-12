@@ -31,6 +31,31 @@ obj <- readRDS("saved/toZenodo/midBrainIntegration.RDS")
 obj <- obj[,(obj$Dataset=="MLO" &  grepl("Control", obj$donorDimensions)) | obj$system=="Foetal"]
 gc()
 
+obj$Dataset2 <- obj$Dataset
+obj$Dataset2[grepl("Agarwal", obj$Dataset2 )] <- "Agarwal et al. 2020 (PostMortem)"
+obj$Dataset2[grepl("Birtele-ParmarFoetal", obj$Dataset2 )] <- "Birtele et al. 2022 (Foetal)"
+obj$Dataset2[grepl("Fiorenzano-ParmarOrg", obj$Dataset2 )] <- "Fiorenzano et al. 2021 (3D)"
+obj$Dataset2[grepl("LeManno", obj$Dataset2 )] <- "La Manno et al. 2016 (Foetal)"
+obj$Dataset2[grepl("MLO", obj$Dataset2 )] <- "This work (2D, 3D, Foetal)"
+obj$Dataset2[grepl("Schwamborn", obj$Dataset2 )] <- "Zagare et al. 2022 (3D)"
+obj$Dataset2[grepl("Braun", obj$Dataset2 )] <- "Braun et al. 2023 (Foetal)"
+obj$Dataset2 <- factor(obj$Dataset2, levels=c("This work (2D, 3D, Foetal)",
+                                              "La Manno et al. 2016 (Foetal)",
+                                              "Birtele et al. 2022 (Foetal)",
+                                              "Braun et al. 2023 (Foetal)",
+                                              "Fiorenzano et al. 2021 (3D)",
+                                              "Agarwal et al. 2020 (PostMortem)",
+                                              "Zagare et al. 2022 (3D)"))
+
+integrationList  <- "umap.mnn"
+
+library(RColorBrewer)
+getPalette = colorRampPalette(brewer.pal(6, "Set1"))
+
+colourCount = length(levels(obj$Dataset2))
+colVec <- setNames(getPalette(colourCount),
+                   levels(obj$Dataset2))
+
 obj$facetUnit <- NA
 maskMLO <- obj$Dataset=="MLO"
 obj$facetUnit[maskMLO] <- gsub("foetal-","PCW-", obj$dimensionsTime[maskMLO])
@@ -63,7 +88,7 @@ plot2 <- DimPlot(obj, reduction = "umap.mnn", label = FALSE, raster=NULL, pt.siz
   ggtitle("")+gghighlight(keep_scales = T)
 
 
-pdf(file=paste0(rootMain,"mainFigure4E.pdf"), width=14, height = 4)
+pdf(file=paste0(rootMain,"mainFigure4E.pdf"), width=34, height = 8)
 plot(plot2)
 dev.off()
 

@@ -121,9 +121,9 @@ allres <- sapply(resultsGO_clean, function(y){
 allres <- do.call("rbind", allres)
 
 
-############################
-## Supplemental Figure 8G ##
-############################
+#############################
+## Supplemental Figure 11C ##
+#############################
 
 
 allres$short <- allres$term_name
@@ -149,7 +149,7 @@ allres <- allres %>%
   mutate(group = tidytext::reorder_within(short, OddsRatio, within=test))
 
 
-suppFig8G <- ggplot(allres, aes(x=OddsRatio, y=group, size=OddsRatio, col=p_value))+
+suppFig11C <- ggplot(allres, aes(x=OddsRatio, y=group, size=OddsRatio, col=p_value))+
   geom_point()+
   theme_bw()+
   scale_colour_gradient(low = "red", high = "blue", na.value = NA)+
@@ -162,8 +162,8 @@ suppFig8G <- ggplot(allres, aes(x=OddsRatio, y=group, size=OddsRatio, col=p_valu
   facet_wrap(vars(test), scales = "free_y", ncol=1)
 
 
-pdf(file=paste0(rootSupp,"suppFigure8G.pdf"), width=12, height = 8)
-plot(suppFig8G)
+pdf(file=paste0(rootSupp,"suppFigure11C.pdf"), width=12, height = 8)
+plot(suppFig11C)
 dev.off()
 
 
@@ -306,12 +306,12 @@ print(perm_test_results)
 saveRDS(perm_test_results, "saved/permutationsDistr/perm_test_results_neuronalModule_distr_ours_LaManno.RDS")
 
 
-############################
-## Supplemental Figure 8H ##
-############################
+#############################
+## Supplemental Figure 11D ##
+#############################
 
 
-suppFig8H <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScores, fill = Dataset2)) +
+suppFig11D <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScores, fill = Dataset2)) +
   theme_bw()+
   geom_split_violin(alpha = .4, trim = FALSE) +
   geom_boxplot(width = .2, alpha = .6, fatten = NULL, show.legend = FALSE, outlier.shape=NA) +
@@ -329,7 +329,7 @@ suppFig8H <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationS
         axis.text.x=element_text(size=11))
 
 for(i in 1:nrow(perm_test_results)) {
-  suppFig8H <- suppFig8H + annotate("text",
+  suppFig11D <- suppFig11D + annotate("text",
                         x = perm_test_results$Module[i],
                         y = 4, # Adjust the y position based on your data
                         label = perm_test_results$p_signif[i],
@@ -337,8 +337,8 @@ for(i in 1:nrow(perm_test_results)) {
                         color = "black")
 }
 
-pdf(file=paste0(rootSupp,"suppFigure8H.pdf"), height = 4.5, width=4.5)
-plot(suppFig8H)
+pdf(file=paste0(rootSupp,"suppFigure11D.pdf"), height = 4.5, width=4.5)
+plot(suppFig11D)
 dev.off()
 
 
@@ -407,10 +407,10 @@ saveRDS(perm_test_results, "saved/permutationsDistr/perm_test_results_neuronalMo
 
 
 ####################
-## Main Figure 4J ##
+## Main Figure 4I ##
 ####################
 
-fig4J <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScores, fill = Dataset2)) +
+fig4I <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScores, fill = Dataset2)) +
   theme_bw()+
   geom_split_violin(alpha = .4, trim = FALSE) +
   geom_boxplot(width = .2, alpha = .6, fatten = NULL, show.legend = FALSE, outlier.shape=NA) +
@@ -428,7 +428,7 @@ fig4J <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScore
         axis.text.x=element_text(size=11))
 
 for(i in 1:nrow(perm_test_results)) {
-  fig4J <- fig4J + annotate("text",
+  fig4I <- fig4I + annotate("text",
                         x = perm_test_results$Module[i],
                         y = 4, # Adjust the y position based on your data
                         label = perm_test_results$p_signif[i],
@@ -436,8 +436,8 @@ for(i in 1:nrow(perm_test_results)) {
                         color = "black")
 }
 
-pdf(file=paste0(rootMain,"mainFigure4J.pdf"), height = 4.5, width=4.5)
-plot(fig4J)
+pdf(file=paste0(rootMain,"mainFigure4I.pdf"), height = 4.5, width=4.5)
+plot(fig4I)
 dev.off()
 
 
@@ -504,10 +504,10 @@ print(perm_test_results)
 saveRDS(perm_test_results, "saved/permutationsDistr/perm_test_results_neuronalModule_distr_ours_Braun.RDS")
 
 ####################
-## Main Figure 4K ##
+## Main Figure 4J ##
 ####################
 
-fig4K <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScores, fill = Dataset2)) +
+fig4J <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScores, fill = Dataset2)) +
   theme_bw()+
   geom_split_violin(alpha = .4, trim = FALSE) +
   geom_boxplot(width = .2, alpha = .6, fatten = NULL, show.legend = FALSE, outlier.shape=NA) +
@@ -525,7 +525,7 @@ fig4K <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScore
         axis.text.x=element_text(size=11))
 
 for(i in 1:nrow(perm_test_results)) {
-  fig4K <- fig4K + annotate("text",
+  fig4J <- fig4J + annotate("text",
                         x = perm_test_results$Module[i],
                         y = 4, # Adjust the y position based on your data
                         label = perm_test_results$p_signif[i],
@@ -533,8 +533,8 @@ for(i in 1:nrow(perm_test_results)) {
                         color = "black")
 }
 
-pdf(file=paste0(rootMain,"mainFigure4K.pdf"), height = 4.5, width=4.5)
-plot(fig4K)
+pdf(file=paste0(rootMain,"mainFigure4J.pdf"), height = 4.5, width=4.5)
+plot(fig4J)
 dev.off()
 
 
@@ -604,13 +604,13 @@ saveRDS(perm_test_results, "saved/permutationsDistr/perm_test_results_oursInVitr
 
 
 
-############################
-## Supplemental Figure 8I ##
-############################
+#############################
+## Supplemental Figure 11E ##
+#############################
 
 library(viridis)
 
-suppFig8I <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScores, fill = Dataset3)) +
+suppFig11E <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScores, fill = Dataset3)) +
   theme_bw()+
   geom_split_violin(alpha = .4, trim = FALSE) +
   geom_boxplot(width = .2, alpha = .6, fatten = NULL, show.legend = FALSE, outlier.shape=NA) +
@@ -629,7 +629,7 @@ suppFig8I <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationS
         legend.title=element_blank())
 
 for(i in 1:nrow(perm_test_results)) {
-  suppFig8I <- suppFig8I + annotate("text",
+  suppFig11E <- suppFig11E + annotate("text",
                         x = perm_test_results$Module[i],
                         y = 4, # Adjust the y position based on your data
                         label = perm_test_results$p_signif[i],
@@ -637,8 +637,8 @@ for(i in 1:nrow(perm_test_results)) {
                         color = "black")
 }
 
-pdf(file=paste0(rootSupp,"suppFigure8I.pdf"), height = 4.5, width=4.5)
-plot(suppFig8I)
+pdf(file=paste0(rootSupp,"suppFigure11E.pdf"), height = 4.5, width=4.5)
+plot(suppFig11E)
 dev.off()
 
 
@@ -702,13 +702,13 @@ saveRDS(perm_test_results, "saved/permutationsDistr/perm_test_results_oursInVitr
 
 
 
-############################
-## Supplemental Figure 8J ##
-############################
+#############################
+## Supplemental Figure 11F ##
+#############################
 
 library(viridis)
 
-suppFig8J <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScores, fill = Dataset2)) +
+suppFig11F <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationScores, fill = Dataset2)) +
   theme_bw()+
   geom_split_violin(alpha = .4, trim = FALSE) +
   geom_boxplot(width = .2, alpha = .6, fatten = NULL, show.legend = FALSE, outlier.shape=NA) +
@@ -727,7 +727,7 @@ suppFig8J <- ggplot(agg_matrix_perCell_long_sub, aes(x = Module, y = ActivationS
         legend.title=element_blank())
 
 for(i in 1:nrow(perm_test_results)) {
-  suppFig8J <- suppFig8J + annotate("text",
+  suppFig11F <- suppFig11F + annotate("text",
                         x = perm_test_results$Module[i],
                         y = 4, # Adjust the y position based on your data
                         label = perm_test_results$p_signif[i],
@@ -735,8 +735,8 @@ for(i in 1:nrow(perm_test_results)) {
                         color = "black")
 }
 
-pdf(file=paste0(rootSupp,"suppFigure8J.pdf"), height = 4.5, width=4.5)
-plot(suppFig8J)
+pdf(file=paste0(rootSupp,"suppFigure11F.pdf"), height = 4.5, width=4.5)
+plot(suppFig11F)
 dev.off()
 
 
@@ -746,9 +746,9 @@ dev.off()
 ##################################
 
 
-############################
-## Supplemental Figure 8F ##
-############################
+#############################
+## Supplemental Figure 11B ##
+#############################
 
 
 
@@ -768,7 +768,7 @@ colVec_ctypes[!names(colVec_ctypes) %in% c("Neurons","Neuroblasts","Progenitors"
 agg_matrix_perCell_long2$Module <- factor(agg_matrix_perCell_long2$Module, levels=unique(agg_matrix_perCell_long2$Module)[order(as.numeric(gsub("Module ", "",unique(agg_matrix_perCell_long2$Module))))])
 agg_matrix_perCell_long2$annotation_unified <- factor(agg_matrix_perCell_long2$annotation_unified, levels=rev(names(colVec_ctypes)))
 
-suppFigure8F <- ggplot(agg_matrix_perCell_long2, aes(x = ActivationScores, y = annotation_unified, fill = annotation_unified)) +
+suppFigure11B <- ggplot(agg_matrix_perCell_long2, aes(x = ActivationScores, y = annotation_unified, fill = annotation_unified)) +
   theme_bw()+
   ggridges::geom_density_ridges(scale = 2, show.legend = FALSE, alpha=0.9) +
   facet_wrap(~Module)+
@@ -778,8 +778,8 @@ suppFigure8F <- ggplot(agg_matrix_perCell_long2, aes(x = ActivationScores, y = a
   ylab("")
 
 
-pdf(file=paste0(rootSupp,"suppFigure8F.pdf"), height = 6, width=6)
-plot(suppFigure8F)
+pdf(file=paste0(rootSupp,"suppFigure11B.pdf"), height = 6, width=6)
+plot(suppFigure11B)
 dev.off()
 
 
@@ -868,9 +868,9 @@ agg_matrix_perCell_neurons_long_sub$Module <- droplevels(agg_matrix_perCell_neur
 
 ## Module 46 ##
 
-############################
-## Supplemental Figure 8K ##
-############################
+#############################
+## Supplemental Figure 11G ##
+#############################
 
 modName <- "Module 46"
 colVec_dataset <- readRDS(file="saved/colVec_datasetColours.RDS")
@@ -893,7 +893,7 @@ stopifnot(all(summary_stats$color %in% names(colVec_dataset)))
 
 summary_stats$samplesToPseudobulk2 <- factor(summary_stats$samplesToPseudobulk2, levels=rev(levels(summary_stats$samplesToPseudobulk2)))
 
-suppFig8K <-ggplot(summary_stats, aes(x=mean_activation, y=samplesToPseudobulk2, col=color)) +
+suppFig11G <-ggplot(summary_stats, aes(x=mean_activation, y=samplesToPseudobulk2, col=color)) +
     theme_bw()+
     geom_point()+
     geom_errorbar(aes(xmin=mean_activation-sd_activation, xmax=mean_activation+sd_activation))+
@@ -903,8 +903,8 @@ suppFig8K <-ggplot(summary_stats, aes(x=mean_activation, y=samplesToPseudobulk2,
          x=expression(paste("Mean Activation Score ", "\u00B1", " SD")))+
     ggtitle(tt)
 
-pdf(file=paste0(rootSupp,"suppFigure8K.pdf"), height = 6, width=5)
-plot(suppFig8K)
+pdf(file=paste0(rootSupp,"suppFigure11G.pdf"), height = 6, width=5)
+plot(suppFig11G)
 dev.off()
 
 
@@ -912,7 +912,7 @@ dev.off()
 ## Module 12 ##
 
 ####################
-## Main Figure 4L ##
+## Main Figure 4K ##
 ####################
 
 
@@ -936,7 +936,7 @@ stopifnot(all(summary_stats$color %in% names(colVec_dataset)))
 
 summary_stats$samplesToPseudobulk2 <- factor(summary_stats$samplesToPseudobulk2, levels=rev(levels(summary_stats$samplesToPseudobulk2)))
 
-fig4L <- ggplot(summary_stats, aes(x=mean_activation, y=samplesToPseudobulk2, col=color)) +
+fig4K <- ggplot(summary_stats, aes(x=mean_activation, y=samplesToPseudobulk2, col=color)) +
     theme_bw()+
     geom_point()+
     geom_errorbar(aes(xmin=mean_activation-sd_activation, xmax=mean_activation+sd_activation))+
@@ -946,8 +946,8 @@ fig4L <- ggplot(summary_stats, aes(x=mean_activation, y=samplesToPseudobulk2, co
          x=expression(paste("Mean Activation Score ", "\u00B1", " SD")))+
     ggtitle(tt)
 
-pdf(file=paste0(rootMain,"mainFigure4L.pdf"), height = 6, width=5)
-plot(fig4L)
+pdf(file=paste0(rootMain,"mainFigure4K.pdf"), height = 6, width=5)
+plot(fig4K)
 dev.off()
 
 

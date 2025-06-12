@@ -71,9 +71,9 @@ cor(pseudotimeOrderCells$slingshot, pseudotimeOrderCells$monocle3, use="complete
 
 
 
-####################
-## Supp Figure 8B ##
-####################
+#####################
+## Supp Figure 10B ##
+#####################
 
 library(tidyr)
 #df <- as.data.frame(pseudotimeOrderCells %>% pivot_longer(-c("cellid"), names_to="Method", values_to="PseudotimeOrdNumCells"))
@@ -135,13 +135,13 @@ corr <- do.call("rbind", corr)
 rownames(corr) <- NULL
 #rownames(corr) <- corr$type
 
-suppFig8B <- reproPlot +
+suppFig10B <- reproPlot +
   geom_text(data=corr,
             aes(label=paste0("italic(R) ^ 2 == ", adj.r.squared)), x=125000, y=20000, col="blue",size=4, parse= T)
 
 
-pdf(file=paste0(rootSupp,"suppFigure8B.pdf"), width=8, height = 6)
-plot(suppFig8B)
+pdf(file=paste0(rootSupp,"suppFigure10B.pdf"), width=8, height = 6)
+plot(suppFig10B)
 dev.off()
 
 

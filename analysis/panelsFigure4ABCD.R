@@ -39,18 +39,18 @@ namesUnified_allctypes_level1 <- c("Astrocytes", "Astrocytes","Astrocytes", "Ast
                                    "Glioblasts","Neurons","Neurons","Neurons",
                                    "Neurons","Neurons","Neurons","Neurons",
                                    "Endothelial/Pericytes","Neurons","Microglia","Precursors",
-                                   "Neuroblasts","Neuroblasts","Neuroblasts","Neuroblasts",
-                                   "Neuroblasts","Progenitors","Progenitors","Neurons",
+                                   "Immature Neurons","Immature Neurons","Immature Neurons","Immature Neurons",
+                                   "Immature Neurons","Progenitors","Progenitors","Neurons",
                                    "OPC","Endothelial/Pericytes","Precursors","Progenitors",
-                                   "Progenitors","Progenitors","Progenitors","RadialGlia",
-                                   "RadialGlia","RadialGlia","RadialGlia","RadialGlia",
-                                   "RadialGlia","RadialGlia","RadialGlia","Neurons",
+                                   "Progenitors","Progenitors","Progenitors","Progenitors",
+                                   "Progenitors","Progenitors","Progenitors","Progenitors",
+                                   "Progenitors","Progenitors","Progenitors","Neurons",
                                    "Neurons","Immune","Microglia","Unknown",
-                                   "Neuroblasts","Neurons","IPC","ODC",
+                                   "Immature Neurons","Neurons","IPC","ODC",
                                    "ODC","ODC","ODC","OPC",
                                    "OPC","OPC","Neurons","Endothelial/Pericytes",
-                                   "Progenitors","RadialGlia","Erythrocytes","RadialGlia",
-                                   "RadialGlia","RadialGlia","Unknown","VLMC",
+                                   "Progenitors","Progenitors","Erythrocytes","Progenitors",
+                                   "Progenitors","Progenitors","Unknown","VLMC",
                                    "VLMC","VLMC")
 
 namesUnified_allctypes_level2 <- c("Others", "Others","Others", "Others",
@@ -135,7 +135,7 @@ saveRDS(colVec, file="saved/colVec_datasetColours.RDS")
 
 sapply(integrationList, function(y){
   
-  fig4A <- DimPlot(obj, reduction = y, label = FALSE, group.by="Dataset2", cols=colVec)+theme_bw()+
+  fig4A <- DimPlot(obj, reduction = y, label = FALSE, raster=FALSE, group.by="Dataset2", cols=colVec)+theme_bw()+
     theme(plot.title=element_blank(),
           panel.border = element_blank(), panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
@@ -294,6 +294,7 @@ resultMixed$Dataset2 <- factor(resultMixed$Dataset2, levels=c("This work",
                                                               "Fiorenzano et al. 2021 (3D)",
                                                               "Agarwal et al. 2020 (PostMortem)"))
 
+resultMixed$annotation_unified <- factor(resultMixed$annotation_unified, levels=names(colVec2))
 
 barplotStckd <- ggplot(resultMixed, aes(fill=annotation_unified, x=plotUnit, y=cell_type_fraction))+
   geom_bar(position="fill", stat="identity")+

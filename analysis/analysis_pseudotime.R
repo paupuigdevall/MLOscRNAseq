@@ -62,26 +62,27 @@ colData(mn.obj)$samplesToPseudobulk2 <- factor(colData(mn.obj)$samplesToPseudobu
                                                         "Agarwal et al. 2020 (PostMortem)"))
 
 allctypes <- names(table(colData(mn.obj)$annotation_mixed))
+
 namesUnified_allctypes <- c("Astrocytes", "Astrocytes","Astrocytes", "Astrocytes",
-                            "Neurons","Neurons","Neurons","Endothelial/Pericytes",
-                            "Erythrocytes","Erythrocytes","Fibroblasts","FPP",
-                            "FPP","FPP","FPP","Neurons",
-                            "Glioblasts","Neurons","Neurons","Neurons",
-                            "Neurons","Neurons","Neurons","Neurons",
-                            "Endothelial/Pericytes","Neurons","Microglia","Precursors",
-                            "Neuroblasts","Neuroblasts","Neuroblasts","Neuroblasts",
-                            "Neuroblasts","Progenitors","Progenitors","Neurons",
-                            "OPC","Endothelial/Pericytes","Precursors","Progenitors",
-                            "Progenitors","Progenitors","Progenitors","RadialGlia",
-                            "RadialGlia","RadialGlia","RadialGlia","RadialGlia",
-                            "RadialGlia","RadialGlia","RadialGlia","Neurons",
-                            "Neurons","Immune","Microglia","Unknown",
-                            "Neuroblasts","Neurons","IPC","ODC",
-                            "ODC","ODC","ODC","OPC",
-                            "OPC","OPC","Neurons","Endothelial/Pericytes",
-                            "Progenitors","RadialGlia","Erythrocytes","RadialGlia",
-                            "RadialGlia","RadialGlia","Unknown","VLMC",
-                            "VLMC","VLMC")
+                                   "Neurons","Neurons","Neurons","Endothelial/Pericytes",
+                                   "Erythrocytes","Erythrocytes","Fibroblasts","FPP",
+                                   "FPP","FPP","FPP","Neurons",
+                                   "Glioblasts","Neurons","Neurons","Neurons",
+                                   "Neurons","Neurons","Neurons","Neurons",
+                                   "Endothelial/Pericytes","Neurons","Microglia","Precursors",
+                                   "Immature Neurons","Immature Neurons","Immature Neurons","Immature Neurons",
+                                   "Immature Neurons","Progenitors","Progenitors","Neurons",
+                                   "OPC","Endothelial/Pericytes","Precursors","Progenitors",
+                                   "Progenitors","Progenitors","Progenitors","Progenitors",
+                                   "Progenitors","Progenitors","Progenitors","Progenitors",
+                                   "Progenitors","Progenitors","Progenitors","Neurons",
+                                   "Neurons","Immune","Microglia","Unknown",
+                                   "Immature Neurons","Neurons","IPC","ODC",
+                                   "ODC","ODC","ODC","OPC",
+                                   "OPC","OPC","Neurons","Endothelial/Pericytes",
+                                   "Progenitors","Progenitors","Erythrocytes","Progenitors",
+                                   "Progenitors","Progenitors","Unknown","VLMC",
+                                   "VLMC","VLMC")
 
 allctypesUnified <- setNames(namesUnified_allctypes, allctypes)
 
@@ -134,7 +135,7 @@ pseudotime_df[is.na(pseudotime_df$annotation_mixed),]$annotation_mixed <- "Unkno
 ###########
 
 ####################
-## Main Figure 4H ##
+## Main Figure 4G ##
 ####################
 
 
@@ -190,12 +191,12 @@ distributionsToTest <- list(c("This work-2D-day40","This work-2D-day70"),
 library(ggsignif)
 library(ggpubr)
 
-fig4H <- tt + stat_compare_means(
+fig4G <- tt + stat_compare_means(
   comparisons = distributionsToTest, aes(label = ..p.signif..),
   step.increase = 0, size=4, label.x = 50, label.y = 50, color="blue")
 
-pdf(file=paste0(rootMain,"mainFigure4H.pdf"), width=4.5, height = 6)
-plot(fig4H)
+pdf(file=paste0(rootMain,"mainFigure4G.pdf"), width=4.5, height = 6)
+plot(fig4G)
 dev.off()
 
 
@@ -216,7 +217,7 @@ pseudotime_df_unified_DA_ours <- pseudotime_df_unified_DA_ours[!pseudotime_df_un
 
 
 ####################
-## Main Figure 4I ##
+## Main Figure 4H ##
 ####################
 
 
@@ -252,20 +253,20 @@ distributionsToTest <- list(c("hDA1b-2D-Day40","hDA1b-2D-Day70"),
 library(ggsignif)
 library(ggpubr)
 
-fig4I <- tt2 + stat_compare_means(
+fig4H <- tt2 + stat_compare_means(
   comparisons = distributionsToTest, aes(label = ..p.signif..),
   step.increase = 0, size=4, label.x = 50, label.y = 50, color="blue")
 
-pdf(file=paste0(rootMain,"mainFigure4I.pdf")), width=5, height = 6)
-plot(fig4I)
+pdf(file=paste0(rootMain,"mainFigure4H.pdf")), width=5, height = 6)
+plot(fig4H)
 dev.off()
 
 
 
 
-############################
-## Supplemental Figure 8E ##
-############################
+#############################
+## Supplemental Figure 11A ##
+#############################
 
 
 
@@ -273,10 +274,10 @@ cell_group_df<- tibble::tibble(cell=row.names(colData(mn.obj)),
                                cell_group=colData(mn.obj)$annotation_unified)
 agg_mat <- aggregate_gene_expression(mn.obj, gene_module_df, cell_group_df)
 row.names(agg_mat) <- stringr::str_c("Module ", row.names(agg_mat))
-suppFig8E <- pheatmap::pheatmap(agg_mat,
+suppFig11A <- pheatmap::pheatmap(agg_mat,
                          scale="column", clustering_method="ward.D2")
-pdf(file=paste0(rootSupp,"suppFigure8E.pdf"), width=12, height = 8)
-suppFig8E
+pdf(file=paste0(rootSupp,"suppFigure11A.pdf"), width=12, height = 8)
+suppFig11A
 dev.off()
 
 

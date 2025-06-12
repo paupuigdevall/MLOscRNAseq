@@ -320,10 +320,10 @@ allTP$geneSymbol <- factor(allTP$geneSymbol, levels = rev(unique(allTP$geneSymbo
 
 
 ##############################
-## Supplementary Figure 18D ##
+## Supplementary Figure 21D ##
 ##############################
 
-figSupp18D <- ggplot(allTP, aes(x=avg_logFC, y=geneSymbol, fill=direction))+
+figSupp21D <- ggplot(allTP, aes(x=avg_logFC, y=geneSymbol, fill=direction))+
   theme_bw()+
   ggtitle("Genes contributing to 'Mitochondrial' enrichment (hMidPre)")+
   geom_bar(position="dodge", stat="identity")+
@@ -335,8 +335,8 @@ figSupp18D <- ggplot(allTP, aes(x=avg_logFC, y=geneSymbol, fill=direction))+
   theme(axis.text.x=element_text(angle=90, hjust=0.5, vjust = 0.5),
         legend.position="top")
 
-pdf(file=paste0(rootSupp,"suppFigure18D.pdf"), width=6, height = 10)
-plot(figSupp18D)
+pdf(file=paste0(rootSupp,"suppFigure21D.pdf"), width=6, height = 10)
+plot(figSupp21D)
 dev.off()
 
 

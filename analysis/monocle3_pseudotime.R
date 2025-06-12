@@ -34,25 +34,25 @@ obj$Dataset2 <- factor(obj$Dataset2, levels=c("This work (2D, Organoids, Foetal)
 
 allctypes <- names(table(obj$annotation_mixed))
 namesUnified_allctypes <- c("Astrocytes", "Astrocytes","Astrocytes", "Astrocytes",
-                            "Neurons","Neurons","Neurons","Endothelial/Pericytes",
-                            "Erythrocytes","Erythrocytes","Fibroblasts","FPP",
-                            "FPP","FPP","FPP","Neurons",
-                            "Glioblasts","Neurons","Neurons","Neurons",
-                            "Neurons","Neurons","Neurons","Neurons",
-                            "Endothelial/Pericytes","Neurons","Microglia","Precursors",
-                            "Neuroblasts","Neuroblasts","Neuroblasts","Neuroblasts",
-                            "Neuroblasts","Progenitors","Progenitors","Neurons",
-                            "OPC","Endothelial/Pericytes","Precursors","Progenitors",
-                            "Progenitors","Progenitors","Progenitors","RadialGlia",
-                            "RadialGlia","RadialGlia","RadialGlia","RadialGlia",
-                            "RadialGlia","RadialGlia","RadialGlia","Neurons",
-                            "Neurons","Immune","Microglia","Unknown",
-                            "Neuroblasts","Neurons","IPC","ODC",
-                            "ODC","ODC","ODC","OPC",
-                            "OPC","OPC","Neurons","Endothelial/Pericytes",
-                            "Progenitors","RadialGlia","Erythrocytes","RadialGlia",
-                            "RadialGlia","RadialGlia","Unknown","VLMC",
-                            "VLMC","VLMC")
+                                   "Neurons","Neurons","Neurons","Endothelial/Pericytes",
+                                   "Erythrocytes","Erythrocytes","Fibroblasts","FPP",
+                                   "FPP","FPP","FPP","Neurons",
+                                   "Glioblasts","Neurons","Neurons","Neurons",
+                                   "Neurons","Neurons","Neurons","Neurons",
+                                   "Endothelial/Pericytes","Neurons","Microglia","Precursors",
+                                   "Immature Neurons","Immature Neurons","Immature Neurons","Immature Neurons",
+                                   "Immature Neurons","Progenitors","Progenitors","Neurons",
+                                   "OPC","Endothelial/Pericytes","Precursors","Progenitors",
+                                   "Progenitors","Progenitors","Progenitors","Progenitors",
+                                   "Progenitors","Progenitors","Progenitors","Progenitors",
+                                   "Progenitors","Progenitors","Progenitors","Neurons",
+                                   "Neurons","Immune","Microglia","Unknown",
+                                   "Immature Neurons","Neurons","IPC","ODC",
+                                   "ODC","ODC","ODC","OPC",
+                                   "OPC","OPC","Neurons","Endothelial/Pericytes",
+                                   "Progenitors","Progenitors","Erythrocytes","Progenitors",
+                                   "Progenitors","Progenitors","Unknown","VLMC",
+                                   "VLMC","VLMC")
 
 allctypesUnified <- setNames(namesUnified_allctypes, allctypes)
 
@@ -159,20 +159,20 @@ get_earliest_principal_node <- function(cds, time_bin="FPP"){
 mn.obj <- order_cells(mn.obj, root_pr_nodes=get_earliest_principal_node(mn.obj))
 
 
-####################
-## Supp Figure 8A ##
-####################
+#####################
+## Supp Figure 10A ##
+#####################
 
 
-figS8A <- plot_cells(mn.obj,
+figS10A <- plot_cells(mn.obj,
                  color_cells_by = "pseudotime",
                  label_cell_groups=FALSE,
                  label_leaves=FALSE,
                  label_branch_points=FALSE,
                  label_roots = FALSE)
 
-pdf(file=paste0(rootSupp,"suppFigure8A.pdf"), width=8, height = 6)
-plot(figS8A)
+pdf(file=paste0(rootSupp,"suppFigure10A.pdf"), width=8, height = 6)
+plot(figS10A)
 dev.off()
 
 
@@ -258,26 +258,27 @@ colData(mn.obj)$samplesToPseudobulk2 <- factor(colData(mn.obj)$samplesToPseudobu
                                                         "Agarwal et al. 2020 (PostMortem)"))
 
 allctypes <- names(table(colData(mn.obj)$annotation_mixed))
+
 namesUnified_allctypes <- c("Astrocytes", "Astrocytes","Astrocytes", "Astrocytes",
-                            "Neurons","Neurons","Neurons","Endothelial/Pericytes",
-                            "Erythrocytes","Erythrocytes","Fibroblasts","FPP",
-                            "FPP","FPP","FPP","Neurons",
-                            "Glioblasts","Neurons","Neurons","Neurons",
-                            "Neurons","Neurons","Neurons","Neurons",
-                            "Endothelial/Pericytes","Neurons","Microglia","Precursors",
-                            "Neuroblasts","Neuroblasts","Neuroblasts","Neuroblasts",
-                            "Neuroblasts","Progenitors","Progenitors","Neurons",
-                            "OPC","Endothelial/Pericytes","Precursors","Progenitors",
-                            "Progenitors","Progenitors","Progenitors","RadialGlia",
-                            "RadialGlia","RadialGlia","RadialGlia","RadialGlia",
-                            "RadialGlia","RadialGlia","RadialGlia","Neurons",
-                            "Neurons","Immune","Microglia","Unknown",
-                            "Neuroblasts","Neurons","IPC","ODC",
-                            "ODC","ODC","ODC","OPC",
-                            "OPC","OPC","Neurons","Endothelial/Pericytes",
-                            "Progenitors","RadialGlia","Erythrocytes","RadialGlia",
-                            "RadialGlia","RadialGlia","Unknown","VLMC",
-                            "VLMC","VLMC")
+                                   "Neurons","Neurons","Neurons","Endothelial/Pericytes",
+                                   "Erythrocytes","Erythrocytes","Fibroblasts","FPP",
+                                   "FPP","FPP","FPP","Neurons",
+                                   "Glioblasts","Neurons","Neurons","Neurons",
+                                   "Neurons","Neurons","Neurons","Neurons",
+                                   "Endothelial/Pericytes","Neurons","Microglia","Precursors",
+                                   "Immature Neurons","Immature Neurons","Immature Neurons","Immature Neurons",
+                                   "Immature Neurons","Progenitors","Progenitors","Neurons",
+                                   "OPC","Endothelial/Pericytes","Precursors","Progenitors",
+                                   "Progenitors","Progenitors","Progenitors","Progenitors",
+                                   "Progenitors","Progenitors","Progenitors","Progenitors",
+                                   "Progenitors","Progenitors","Progenitors","Neurons",
+                                   "Neurons","Immune","Microglia","Unknown",
+                                   "Immature Neurons","Neurons","IPC","ODC",
+                                   "ODC","ODC","ODC","OPC",
+                                   "OPC","OPC","Neurons","Endothelial/Pericytes",
+                                   "Progenitors","Progenitors","Erythrocytes","Progenitors",
+                                   "Progenitors","Progenitors","Unknown","VLMC",
+                                   "VLMC","VLMC")
 
 allctypesUnified <- setNames(namesUnified_allctypes, allctypes)
 
@@ -364,13 +365,13 @@ dev.off()
 ## The figure below is a panel with all the combinations for dataset, timepoint and model (as indicated by column "samplesToPseudobulk2").
 
 
-####################
-## Main Figure 4G ##
-####################
+#################################
+## Supplemental Figure 10C-10D ##
+#################################
 
 pseudotime_df_subset <- subset(pseudotime_df, samplesToPseudobulk2=="PCW8 - Braun et al. 2023 (Foetal)" | samplesToPseudobulk2=="PCW14 - Braun et al. 2023 (Foetal)")
 
-fig4G <- ggplot(pseudotime_df_subset, 
+suppfig10CD <- ggplot(pseudotime_df_subset, 
                               aes(x = pseudotime_ranked, 
                                   y = annotation_unified, colour = annotation_unified)) +
   geom_quasirandom(groupOnX = FALSE) +
@@ -385,18 +386,18 @@ fig4G <- ggplot(pseudotime_df_subset,
   scale_x_continuous(limits=c(0,180000), breaks=seq(0,180000, 50000))
 
 
-pdf(file=paste0(rootMain,"mainFigure4G.pdf"), width=8, height = 4.5)
-plot(fig4G)
+pdf(file=paste0(rootMain,"suppFigure10C10D.pdf"), width=8, height = 4.5)
+plot(suppfig10CD)
 dev.off()
 
 
 ###############################
-## Supplemental Figure 8C-8D ##
+## Supplemental Figure 10E-10F ##
 ###############################
 
 pseudotime_df_subset2 <- subset(pseudotime_df, samplesToPseudobulk2=="Day120 - This work (3D)" | samplesToPseudobulk2=="PCW10 - This work (Foetal)")
 
-suppfig8CD <- ggplot(pseudotime_df_subset2, 
+suppfig10EF <- ggplot(pseudotime_df_subset2, 
                 aes(x = pseudotime_ranked, 
                     y = annotation_unified, colour = annotation_unified)) +
   geom_quasirandom(groupOnX = FALSE) +
@@ -411,8 +412,8 @@ suppfig8CD <- ggplot(pseudotime_df_subset2,
   scale_x_continuous(limits=c(0,180000), breaks=seq(0,180000, 50000))
 
 
-pdf(file=paste0(rootMain,"suppFigure8C8D.pdf"), width=8, height = 4.5)
-plot(suppfig8CD)
+pdf(file=paste0(rootMain,"suppFigure10E10F.pdf"), width=8, height = 4.5)
+plot(suppfig10EF)
 dev.off()
 
 

@@ -122,19 +122,19 @@ Rscript panelsFigure4F.R
 Rscript destiny_pseudotime.R      
 Rscript slingshot_pseudotime.R    
 
-## Run pseudotime analysis for Monocle3. Produce figures 4G (Main), S8A, S8C, S8D (Supplementary) and Table S8
+## Run pseudotime analysis for Monocle3. Produce figures S10A, S10E, S10F, S10C, S10D (Supplementary) and Table S8
 Rscript monocle3_pseudotime.R    
 
-## Comparison pseudotime tools. Produce Table S7 and figure S8B (Supplementary).
+## Comparison pseudotime tools. Produce Table S7 and figure S10B (Supplementary).
 Rscript comparison_pseudotime.R
 
-## Analysis of pseudotime across all neurons from all datasets and across all DA subtypes. Produce figures 4H and 4I (Main) and figures S8E (Supplementary).
+## Analysis of pseudotime across all neurons from all datasets and across all DA subtypes. Produce figures 4G and 4H (Main) and figures S11A (Supplementary).
 Rscript analysis_pseudotime.R
 
-## Comparison of module activation scores. It produces figures 4J, 4K and 4L (Main) and figures S8G, S8H, S8I, S8J, S8F and S8K (Supplementary).
+## Comparison of module activation scores. It produces figures 4I, 4J and 4K (Main) and figures S11C, S11D, S11E, S11F, S11B and S11G (Supplementary).
 Rscript analysis_modules.R
 
-## Comparison of patient vs control organoids. It produces figures 7F, 7G, 7H, 7I (Main) and figures S18D (Supplementary).
+## Comparison of patient vs control organoids. It produces figures 7F, 7G, 7H, 7I (Main) and figures S21D (Supplementary).
 Rscript functional_analysis.R
 
 
