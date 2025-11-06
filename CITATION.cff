@@ -1,12 +1,14 @@
-cff-version: 1.0.0
+cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
+title: "An in vivo and in vitro spatiotemporal profile of human midbrain development (scRNA-seq code)"
 authors:
   - family-names: Puigdevall Costa
     given-names: Pau
-    orcid: https://orcid.org/0000-0002-8687-4942
-title: "An in vivo and in vitro spatiotemporal profile of human midbrain development (scRNA-seq code)"
-version: 1.0.0
+    orcid: "https://orcid.org/0000-0002-8687-4942"
+version: "1.0.0"
 identifiers:
   - type: doi
-    value: 
+    value: "10.5281/zenodo.17541276"
+    description: "DOI for this release"
+repository-artifact: "https://doi.org/10.5281/zenodo.17541276"
 date-released: 2025-11-06
