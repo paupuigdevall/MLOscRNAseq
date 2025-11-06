@@ -8,7 +8,7 @@ authors:
 version: "1.0.0"
 identifiers:
   - type: doi
-    value: "10.5281/zenodo.17541276"
+    value: "10.5281/zenodo.17541380"
     description: "DOI for this release"
-repository-artifact: "https://doi.org/10.5281/zenodo.17541276"
+repository-artifact: "https://doi.org/10.5281/zenodo.17541380"
 date-released: 2025-11-06
