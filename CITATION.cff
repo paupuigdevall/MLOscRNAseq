@@ -4,7 +4,7 @@ authors:
   - family-names: Puigdevall Costa
     given-names: Pau
     orcid: https://orcid.org/0000-0002-8687-4942
-title: "Single cell transcriptomics analysis for the paper 'An in vivo and in vitro spatiotemporal profile of human midbrain development'"
+title: "An in vivo and in vitro spatiotemporal profile of human midbrain development (scRNA-seq code)"
 version: 1.0.0
 identifiers:
   - type: doi
